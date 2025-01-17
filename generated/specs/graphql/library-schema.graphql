@@ -1,0 +1,433 @@
+"""  Top level schema object.  """
+schema {
+	query: Query
+	mutation: Mutation
+}
+
+"""  Root Query type  """
+type Query {
+"""  Get the identified instance of the Address  """
+	addressById(id: ID!): Address
+"""  Get the set of Address  """
+	addresses: [Address]
+"""  Get the identified instance of the Librarian  """
+	librarianById(id: ID!): Librarian
+"""  Get the set of Librarian  """
+	librarians: [Librarian]
+"""  Get the identified instance of the MediaCopyOrder  """
+	mediaCopyOrderById(id: ID!): MediaCopyOrder
+"""  Get the set of MediaCopyOrder  """
+	mediaCopyOrders: [MediaCopyOrder]
+"""  Get the identified instance of the MediaCopy  """
+	mediaCopyById(id: ID!): MediaCopy
+"""  Get the set of MediaCopy  """
+	mediaCopies: [MediaCopy]
+"""  Get the identified instance of the MediaTitle  """
+	mediaTitleById(id: ID!): MediaTitle
+"""  Get the set of MediaTitle  """
+	mediaTitles: [MediaTitle]
+"""  Get the identified instance of the JuniorBorrower  """
+	juniorBorrowerById(id: ID!): JuniorBorrower
+"""  Get the set of JuniorBorrower  """
+	juniorBorrowers: [JuniorBorrower]
+"""  Get the identified instance of the AdultBorrower  """
+	adultBorrowerById(id: ID!): AdultBorrower
+"""  Get the set of AdultBorrower  """
+	adultBorrowers: [AdultBorrower]
+"""  Get the identified instance of the Loan  """
+	loanById(id: ID!): Loan
+"""  Get the set of Loan  """
+	loans: [Loan]
+"""  Get the identified instance of the Reservation  """
+	reservationById(id: ID!): Reservation
+"""  Get the set of Reservation  """
+	reservations: [Reservation]
+"""  For the specified number of towns, the number of loans for each Genre is returned.  """
+	topGenres(topGenres: Int): TopGenre
+"""  Get the identified instance of the BorrowerSummary  """
+	borrowerSummaryById(id: ID!): BorrowerSummary
+"""  Get the set of BorrowerSummary  """
+	borrowerSummaries: [BorrowerSummary]
+"""  Get the identified instance of the LoanSummaryForTown  """
+	loanSummaryForTownById(id: ID!): LoanSummaryForTown
+"""  Get the set of LoanSummaryForTown  """
+	loanSummaryForTowns: [LoanSummaryForTown]
+"""  Get the identified instance of the LoanSummaryForCounty  """
+	loanSummaryForCountyById(id: ID!): LoanSummaryForCounty
+"""  Get the set of LoanSummaryForCounty  """
+	loanSummaryForCounties: [LoanSummaryForCounty]
+"""  Get the identified instance of the BorrowerStatsByCounty  """
+	borrowerStatsByCountyById(id: ID!): BorrowerStatsByCounty
+"""  Get the set of BorrowerStatsByCounty  """
+	borrowerStatsByCounties: [BorrowerStatsByCounty]
+"""  Gets the statistics for each County. For each Town and Borrower the total number of Loans is retrieved.  """
+	countyStats(countyStats: String): BorrowerStatsByCounty
+}
+
+"""  Root Mutation type  """
+type Mutation {
+"""  Create a new Address and return the new instance  """
+	createAddress(input: AddressInput): Address
+"""  Create a new JuniorBorrower and return the new instance  """
+	createJuniorBorrower(input: JuniorBorrowerInput): JuniorBorrower
+"""  Create a new MediaTitle and return the new instance  """
+	createMediaTitle(input: MediaTitleInput): MediaTitle
+"""  Create a new MediaCopy and return the new instance  """
+	createMediaCopy(input: MediaCopyInput): MediaCopy
+"""  Create a new MediaCopyOrder and return the new instance  """
+	createMediaCopyOrder(input: MediaCopyOrderInput): MediaCopyOrder
+"""  Create a new Librarian and return the new instance  """
+	createLibrarian(input: LibrarianInput): Librarian
+"""  Create a new AdultBorrower and return the new instance  """
+	createAdultBorrower(input: AdultBorrowerInput): AdultBorrower
+"""  Create a new Loan and return the new instance  """
+	createLoan(input: LoanInput): Loan
+"""  Create a new Reservation and return the new instance  """
+	createReservation(input: ReservationInput): Reservation
+"""  Create a new BorrowerSummary and return the new instance  """
+	createBorrowerSummary(input: BorrowerSummaryInput): BorrowerSummary
+"""  Create a new LoanSummaryForTown and return the new instance  """
+	createLoanSummaryForTown(input: LoanSummaryForTownInput): LoanSummaryForTown
+"""  Create a new LoanSummaryForCounty and return the new instance  """
+	createLoanSummaryForCounty(input: LoanSummaryForCountyInput): LoanSummaryForCounty
+"""  Create a new BorrowerStatsByCounty and return the new instance  """
+	createBorrowerStatsByCounty(input: BorrowerStatsByCountyInput): BorrowerStatsByCounty
+}
+
+"""  The abstract concept of a Borrower. Actual Borrowers must be either Adult or Junior.  """
+interface Borrower {
+	"""  borrowed this set of MediaCopy.  """
+	borrowedMediaCopies: [MediaCopy]
+	"""  borrowed this set of MediaCopy.  """
+	mediaCopies: [MediaCopy]
+	"""  reserved this set of MediaTitle.  """
+	mediaTitles: [MediaTitle]
+	"""  reserved this set of MediaTitle.  """
+	reservedMediaTitles: [MediaTitle]
+}
+
+"""  Represents a Person object.
+  """
+interface Person {
+	"""  currently lives at this Address.  """
+	currentlyLivesAtAddress: Address!
+	givenName: String!
+	surname: String!
+}
+
+"""  An Address that Borrowers currently or previously have lived at.  """
+type Address {
+	country: String!
+	currentlyLivesAtCount: Int!
+	"""  is currently lived at by this set of Person.  """
+	isCurrentlyLivedAtByPersons: [Person]!
+	street: String!
+	town: String!
+}
+
+"""  A Borrower who can borrow any media and can vouch for Junior Borrowers.  """
+type AdultBorrower implements Borrower & Person {
+	"""  borrowed this set of MediaCopy.  """
+	borrowedMediaCopies: [MediaCopy]
+	"""  currently lives at this Address.  """
+	currentlyLivesAtAddress: Address!
+	givenName: String!
+	"""  borrowed this set of MediaCopy.  """
+	mediaCopies: [MediaCopy]
+	"""  reserved this set of MediaTitle.  """
+	mediaTitles: [MediaTitle]
+	"""  reserved this set of MediaTitle.  """
+	reservedMediaTitles: [MediaTitle]
+	surname: String!
+	"""  vouched for this set of JuniorBorrower.  """
+	vouchedForJuniorBorrowers: [JuniorBorrower]
+}
+
+"""  Represents a Borrower Stats By County object.
+  """
+type BorrowerStatsByCounty {
+	id: UUID!
+	loanSummaryForCounty: [LoanSummaryForCounty]
+	type: String!
+}
+
+"""  Represents a Borrower Summary object.
+  """
+type BorrowerSummary {
+	givenName: String!
+	id: UUID!
+	surname: String!
+	totalLoans: Int!
+	type: BorrowerType!
+}
+
+"""  Represents a Date 2 object.
+  """
+type Date2 {
+	day: Int!
+	month: Int!
+	year: Int!
+}
+
+"""  Represents a Date Time 2 object.
+  """
+type DateTime2 {
+	date: Date2!
+	hour: Int!
+	minute: Int!
+	second: Int!
+}
+
+"""  A Borrower who cannot borrow certain Media Titles and a limited number of Media Copies.  """
+type JuniorBorrower implements Borrower & Person {
+	"""  borrowed this set of MediaCopy.  """
+	borrowedMediaCopies: [MediaCopy]
+	"""  currently lives at this Address.  """
+	currentlyLivesAtAddress: Address!
+	"""  The Date of Birth (DOB) of this Junior Borrower  """
+	dob: Date!
+	givenName: String!
+	"""  borrowed this set of MediaCopy.  """
+	mediaCopies: [MediaCopy]
+	"""  reserved this set of MediaTitle.  """
+	mediaTitles: [MediaTitle]
+	"""  reserved this set of MediaTitle.  """
+	reservedMediaTitles: [MediaTitle]
+	surname: String!
+	"""  was vouched for by this AdultBorrower.  """
+	wasVouchedForByAdultBorrower: AdultBorrower!
+}
+
+"""  A Librarian who can order copies of MediaTitles and may act as a manager or mentor for other librarians.  """
+type Librarian implements Person {
+	"""  currently lives at this Address.  """
+	currentlyLivesAtAddress: Address!
+	givenName: String!
+	"""  is managed by this Librarian.  """
+	isManagedBy: Librarian
+	"""  is mentored by this Librarian.  """
+	isMentoredBy: Librarian
+	"""  manages this set of Librarian.  """
+	manages: [Librarian]
+	"""  mentors this set of Librarian.  """
+	mentors: [Librarian]
+	"""  placed this set of MediaCopyOrder.  """
+	placedMediaCopyOrders: [MediaCopyOrder]
+	surname: String!
+}
+
+"""  The Loan of a specific Media Copy  """
+type Loan {
+	"""  was borrowed by this Borrower.  """
+	borrower: Borrower!
+	dateBorrowed: DateTime2!
+	dateReturned: Date
+	"""  borrowed this MediaCopy.  """
+	mediaCopy: MediaCopy!
+}
+
+"""  Represents a Loan Summary For County object.
+  """
+type LoanSummaryForCounty {
+	countyName: String!
+	loanSummaryForTown: [LoanSummaryForTown]
+	totalLoans: Int!
+}
+
+"""  Represents a Loan Summary For Town object.
+  """
+type LoanSummaryForTown {
+	borrowerSummary: [BorrowerSummary]
+	totalLoans: Int!
+	townName: String!
+}
+
+"""  An actual copy of a MediaTitle that can be borrowed.  """
+type MediaCopy {
+	"""  was borrowed by this set of Borrower.  """
+	borrowers: [Borrower]
+	copyNumber: Int!
+	dateAcquired: Date!
+	"""  null this MediaTitle.  """
+	mediaTitle: MediaTitle
+	"""  was borrowed by this set of Borrower.  """
+	wasBorrowedByBorrowers: [Borrower]
+	"""  was ordered by this MediaCopyOrder.  """
+	wasOrderedByMediaCopyOrder: MediaCopyOrder!
+}
+
+"""  Represents a Media Copy Order object.
+  """
+type MediaCopyOrder {
+	copyCount: Int!
+	dateOrdered: Date2!
+	"""  null this MediaTitle.  """
+	mediaTitle: MediaTitle
+	"""  order by this Librarian.  """
+	orderByLibrarian: Librarian!
+	"""  ordered this set of MediaCopy.  """
+	orderedMediaCopies: [MediaCopy]!
+}
+
+"""  Details of a Media Title, such as a Book or Movie. This is distinct from a Media Copy which is a particular   """
+type MediaTitle {
+	author: String!
+	"""  was reserved by this set of Borrower.  """
+	borrowers: [Borrower]
+	"""  copies ordered by this set of MediaCopyOrder.  """
+	copiesOrderedByMediaCopyOrders: [MediaCopyOrder]
+	description: String!
+	"""  held as this set of MediaCopy.  """
+	heldAsMediaCopies: [MediaCopy]!
+	isbn: String!
+	mediaType: MediaType!
+	price: Float!
+	rating: Float!
+	title: String!
+	"""  was reserved by this set of Borrower.  """
+	wasReservedByBorrowers: [Borrower]
+}
+
+"""  The Reservation of a Media Title, independent of which actual copy is subsequently loaned.  """
+type Reservation {
+	"""  was reserved by this Borrower.  """
+	borrower: Borrower!
+	dateReserved: Date!
+	"""  reserved this MediaTitle.  """
+	mediaTitle: MediaTitle!
+}
+
+"""  Represents a Top Genre object.
+  """
+type TopGenre {
+	id: UUID!
+	type: String!
+}
+
+"""  An Address that Borrowers currently or previously have lived at.  """
+input AddressInput {
+	country: String!
+	currentlyLivesAtCount: Int!
+	street: String!
+	town: String!
+}
+
+"""  A Borrower who can borrow any media and can vouch for Junior Borrowers.  """
+input AdultBorrowerInput {
+	givenName: String!
+	surname: String!
+}
+
+"""  Represents a Borrower Stats By County object.
+  """
+input BorrowerStatsByCountyInput {
+	id: UUID!
+	loanSummaryForCounty: [LoanSummaryForCounty]
+	type: String!
+}
+
+"""  Represents a Borrower Summary object.
+  """
+input BorrowerSummaryInput {
+	givenName: String!
+	id: UUID!
+	surname: String!
+	totalLoans: Int!
+	type: BorrowerType!
+}
+
+"""  A Borrower who cannot borrow certain Media Titles and a limited number of Media Copies.  """
+input JuniorBorrowerInput {
+	"""  The Date of Birth (DOB) of this Junior Borrower  """
+	dob: Date!
+	givenName: String!
+	surname: String!
+}
+
+"""  A Librarian who can order copies of MediaTitles and may act as a manager or mentor for other librarians.  """
+input LibrarianInput {
+	givenName: String!
+	surname: String!
+}
+
+"""  The Loan of a specific Media Copy  """
+input LoanInput {
+	dateBorrowed: DateTime2!
+	dateReturned: Date
+}
+
+"""  Represents a Loan Summary For County object.
+  """
+input LoanSummaryForCountyInput {
+	countyName: String!
+	loanSummaryForTown: [LoanSummaryForTown]
+	totalLoans: Int!
+}
+
+"""  Represents a Loan Summary For Town object.
+  """
+input LoanSummaryForTownInput {
+	borrowerSummary: [BorrowerSummary]
+	totalLoans: Int!
+	townName: String!
+}
+
+"""  An actual copy of a MediaTitle that can be borrowed.  """
+input MediaCopyInput {
+	copyNumber: Int!
+	dateAcquired: Date!
+}
+
+"""  Represents a Media Copy Order object.
+  """
+input MediaCopyOrderInput {
+	copyCount: Int!
+	dateOrdered: Date2!
+}
+
+"""  Details of a Media Title, such as a Book or Movie. This is distinct from a Media Copy which is a particular   """
+input MediaTitleInput {
+	author: String!
+	description: String!
+	isbn: String!
+	mediaType: MediaType!
+	price: Float!
+	rating: Float!
+	title: String!
+}
+
+"""  The Reservation of a Media Title, independent of which actual copy is subsequently loaned.  """
+input ReservationInput {
+	dateReserved: Date!
+}
+
+"""  Represents a Borrower Type object.
+  """
+enum BorrowerType {
+	ADULT_BORROWER
+	JUNIOR_BORROWER
+}
+
+"""  The types of MediaTitle that the library holds.  """
+enum MediaType {
+	BOOK
+	VIDEO
+	AUDIO
+}
+
+"""  An ISO 8601 standard representation of a date.  """
+scalar Date
+
+"""  A 32-bit floating point number that adheres to the IEEE 754 single-precision standard .  """
+scalar Float
+
+"""  A signed 32-bit integer, ranges from --2,147,483,648 to 2,147,483,647
+  """
+scalar Int
+
+"""  A sequence of characters.  """
+scalar String
+
+"""  A Universally Unique Identifier.  """
+scalar UUID
+

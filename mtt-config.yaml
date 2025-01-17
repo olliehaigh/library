@@ -1,7 +1,7 @@
-modelFileUrl: "https://github.com/mghaigh/library/blob/library-v1/library.xml"
+modelFileUrl: "https://github.com/olliehaigh/library/blob/library/library.xml"
 # modelFileType: "json"
 # outputDirUrl: "file:/library/generated"
-outputDirUrl: "https://github.com/mghaigh/library/blob/library-v1/generated"
+outputDirUrl: "https://github.com/olliehaigh/library/blob/library/generated"
 modelConfig:
   queriesPackageName: "Interfaces"
   typesPackageName: "Types Folder"
@@ -10,23 +10,23 @@ modelConfig:
       - CREATE
       - READ
 dependencies:
-  - modelFileUrl: "https://github.com/mghaigh/personal-details/blob/master/generated/mtt-models/personal-details.json"
+  - modelFileUrl: "https://github.com/olliehaigh/personal-details/blob/master/generated/mtt-models/personal-details.json"
     version: "1.0.0"
 loader:
-  configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/loaders/ea-xmi/config.yaml"
+  configFileUrl: "https://github.com/olliehaigh/library/blob/library/config/loaders/ea-xmi/config.yaml"
   outputSubDir: "mtt-models"
 generators:
   graphql:
-    configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/generators/graphql/config.yaml"
+    configFileUrl: "https://github.com/olliehaigh/library/blob/library/config/generators/graphql/config.yaml"
     outputSubDir: "specs/graphql"
   openapi:
-    configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/generators/openapi/config.yaml"
+    configFileUrl: "https://github.com/olliehaigh/library/blob/library/config/generators/openapi/config.yaml"
     outputSubDir: "specs/openapi"
   mkdocs:
-    configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/generators/mkdoc/config.yaml"
+    configFileUrl: "https://github.com/olliehaigh/library/blob/library/config/generators/mkdoc/config.yaml"
     outputSubDir: "docs/mkdocs"
   aoco:
-    configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/generators/aoco/config.yaml"
+    configFileUrl: "https://github.com/olliehaigh/library/blob/library/config/generators/aoco/config.yaml"
     outputSubDir: "specs/aoco"
   oml:
     configFileUrl: "file:/library/config/generators/oml/oml.yaml"

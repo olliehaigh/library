@@ -1,0 +1,36 @@
+modelFileUrl: "https://github.com/mghaigh/library/blob/library-v1/library.xml"
+# modelFileType: "json"
+# outputDirUrl: "file:/library/generated"
+outputDirUrl: "https://github.com/mghaigh/library/blob/library-v1/generated"
+modelConfig:
+  queriesPackageName: "Interfaces"
+  typesPackageName: "Types Folder"
+  defaults:
+    classActions:
+      - CREATE
+      - READ
+dependencies:
+  - modelFileUrl: "https://github.com/mghaigh/personal-details/blob/master/generated/mtt-models/personal-details.json"
+    version: "1.0.0"
+loader:
+  configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/loaders/ea-xmi/config.yaml"
+  outputSubDir: "mtt-models"
+generators:
+  graphql:
+    configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/generators/graphql/config.yaml"
+    outputSubDir: "specs/graphql"
+  openapi:
+    configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/generators/openapi/config.yaml"
+    outputSubDir: "specs/openapi"
+  mkdocs:
+    configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/generators/mkdoc/config.yaml"
+    outputSubDir: "docs/mkdocs"
+  aoco:
+    configFileUrl: "https://github.com/mghaigh/library/blob/library-v1/config/generators/aoco/config.yaml"
+    outputSubDir: "specs/aoco"
+  oml:
+    configFileUrl: "file:/library/config/generators/oml/oml.yaml"
+    outputSubDir: "specs/oml"
+
+
+# network location format "file://nuc/sambashare/models/library/config/generators/aoco/aoco.yaml"
